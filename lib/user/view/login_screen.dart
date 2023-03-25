@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/common/const/colors.dart';
 import 'package:flutter_riverpod/common/const/data.dart';
 import 'package:flutter_riverpod/common/layout/default_layout.dart';
 import 'package:flutter_riverpod/common/view/root_tab.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -26,10 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
 
     final dio = Dio();
-    //localhost
-    const emulatorIp = '10.0.2.2:3000';
-    const simulatorIp = '127.0.0.1:3000';
-    final ip = Platform.isIOS == true ? simulatorIp : emulatorIp;
 
     return DefaultLayout(
         child: SingleChildScrollView(
@@ -113,17 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         primary: Colors.black,
                       ),
                       onPressed: () async {
-                        final refreshToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RAY29kZWZhY3RvcnkuYWkiLCJzdWIiOiJmNTViMzJkMi00ZDY4LTRjMWUtYTNjYS1kYTlkN2QwZDkyZTUiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY3OTQ3MTc3OCwiZXhwIjoxNjc5NTU4MTc4fQ.9JF757tYGDcfbiKvCS3KHdNkilZvUCj5qORRandhxhA';
-
-                        final resp = await dio.post('http://$ip/auth/token',
-                            options: Options(
-                              headers: {
-                                'authorization' : 'Bearer $refreshToken',
-                              },
-                            )
-                        );
-
-                        print(resp.data);
+                        //
                       },
                       child: const Text(
                         '회원가입',

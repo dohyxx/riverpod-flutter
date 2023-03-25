@@ -1,9 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/common/const/colors.dart';
 import 'package:flutter_riverpod/common/const/data.dart';
 import 'package:flutter_riverpod/common/layout/default_layout.dart';
 import 'package:flutter_riverpod/common/view/root_tab.dart';
-import 'package:flutter_riverpod/user/view/LoginScreen.dart';
+import 'package:flutter_riverpod/user/view/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -27,24 +28,39 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
 
+  //토근이 있는지, 유효한지 체크
   void checkToken() async {
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    final dio = Dio();
 
-    if(refreshToken == null || accessToken == null){
+    try{
+      final resp = await dio.post('http://$ip/auth/token',
+        options: Options(
+          headers: {
+            'authorization' : 'Bearer $refreshToken',
+          },
+        ),
+      );
+
+      await storage.write(key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (_) => LoginScreen()
+              builder: (_) => const RootTab(),
           ), (route) => false
       );
-    }else{
+
+    }catch(e){
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (_) => RootTab()
+              builder: (_) => const LoginScreen(),
           ), (route) => false
       );
+
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
