@@ -8,6 +8,8 @@ import 'package:flutter_riverpod/restaurant/view/restaurant_detail_screen.dart';
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
+
+  // API
   Future<List> paginateRestaurant() async {
     final dio = Dio();
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
@@ -20,9 +22,9 @@ class RestaurantScreen extends StatelessWidget {
         },
       ),
     );
-
     return resp.data['data'];
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class RestaurantScreen extends StatelessWidget {
                   );
                 }
 
+                // 홈 ListView
                 return ListView.separated(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) {
@@ -50,6 +53,7 @@ class RestaurantScreen extends StatelessWidget {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => RestaurantDetailScreen(
                               id: pItem.id,
+                              name: pItem.name,
                             ),
                             ),
                           );

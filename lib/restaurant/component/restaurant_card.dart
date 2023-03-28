@@ -18,12 +18,8 @@ class RestaurantCard  extends StatelessWidget {
   final int deliveryFee;
   // 평균 평점
   final double ratings;
-
-  final RestaurantPriceRange priceRange;
-
   // 상세 카드 여부
   final bool isDetail;
-
   // 상세 내용
   final String? detail;
 
@@ -35,13 +31,13 @@ class RestaurantCard  extends StatelessWidget {
     required this.deliveryTime,
     required this.deliveryFee,
     required this.ratings,
-    required this.priceRange,
     this.isDetail = false,
     this.detail,
     Key? key,
   }) : super(key: key);
 
 
+  //factory method
   factory RestaurantCard.fromModel({
     required RestaurantModel model,
     bool isDetail = false,
@@ -52,7 +48,6 @@ class RestaurantCard  extends StatelessWidget {
         fit: BoxFit.cover,
       ),
       name: model.name,
-      priceRange: model.priceRange,
       tags:model.tags,
       ratingCount: model.ratingsCount,
       deliveryTime: model.deliveryTime,
@@ -67,8 +62,11 @@ class RestaurantCard  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('RestaurantCard Component!!');
+
     return Column(
       children: [
+        // 홈 <-> 상세 페이지 구분
         if(isDetail)
           image,
         if(!isDetail)
@@ -121,6 +119,7 @@ class RestaurantCard  extends StatelessWidget {
                   ),
                 ],
               ),
+              // 홈 <-> 상세 페이지 구분
               if(detail != null && isDetail)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),

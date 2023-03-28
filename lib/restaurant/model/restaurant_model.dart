@@ -1,12 +1,9 @@
 
 import 'package:flutter_riverpod/common/const/data.dart';
+import 'package:flutter_riverpod/common/enum/enum.dart';
 
-enum RestaurantPriceRange {
-  expensive,
-  medium,
-  cheap,
-}
 
+// 홈 화면 메뉴 리스트 모델
 class RestaurantModel {
   final String id;
   final String name;
@@ -17,7 +14,6 @@ class RestaurantModel {
   final int ratingsCount;
   final int deliveryTime;
   final int deliveryFee;
-
 
   RestaurantModel({
     required this.id,
@@ -31,10 +27,13 @@ class RestaurantModel {
     required this.deliveryFee,
   });
 
+  // factory method
   factory RestaurantModel.fromJson({
     required Map<String, dynamic> json,
 
   }) {
+    print('RestaurantModel Data Parsing!!');
+
     return RestaurantModel(
         id: json['id'],
         name: json['name'],

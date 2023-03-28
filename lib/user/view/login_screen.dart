@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/common/component/custom_text_form_field.dart';
@@ -23,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final dio = Dio();
 
     return DefaultLayout(
@@ -93,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
 
-                        print(resp.data);
+                        print('로그인 완료: ${resp.data}');
 
                       },
                       style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/common/enum/enum.dart';
 import 'package:flutter_riverpod/restaurant/model/restaurant_model.dart';
 import 'package:flutter_riverpod/common/const/data.dart';
 
@@ -35,10 +36,7 @@ class RestaurantDetailModel extends RestaurantModel {
       deliveryTime: json['deliveryTime'],
       deliveryFee: json['deliveryFee'],
       detail: json['detail'],
-      products: json['products'].map<RestaurantProductModel>(
-            (x) =>
-            RestaurantProductModel.fromJson(json: x),
-      ).toList(),
+      products: json['products'].map<RestaurantProductModel>((x) => RestaurantProductModel.fromJson(json: x)).toList(),
     );
   }
 
@@ -72,11 +70,3 @@ class RestaurantProductModel {
     );
   }
 }
-
-// "products": [
-// {
-// "id": "1952a209-7c26-4f50-bc65-086f6e64dbbd",
-// "name": "마라맛 코팩 떡볶이",
-// "imgUrl": "/img/img.png",
-// "detail": "서울에서 두번째로 맛있는 떡볶이집! 리뷰 이벤트 진행중~",
-// "price": 8000
