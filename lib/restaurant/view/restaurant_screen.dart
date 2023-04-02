@@ -9,6 +9,7 @@ class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
 
+
   // API
   Future<List> paginateRestaurant() async {
     final dio = Dio();
@@ -46,7 +47,7 @@ class RestaurantScreen extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) {
                     //final item = snapshot.data![index];
-                    final pItem = RestaurantModel.fromJson(json: snapshot.data![index]);
+                    final pItem = RestaurantModel.fromJson(snapshot.data![index]);
 
                     return GestureDetector(
                         onTap: (){

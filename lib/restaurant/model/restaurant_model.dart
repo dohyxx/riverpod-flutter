@@ -1,12 +1,18 @@
 
-import 'package:flutter_riverpod/common/const/data.dart';
 import 'package:flutter_riverpod/common/enum/enum.dart';
-
+import 'package:flutter_riverpod/common/utils/data_utils.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_riverpod/common/const/data.dart';
+part 'restaurant_model.g.dart';
 
 // 홈 화면 메뉴 리스트 모델
+@JsonSerializable()
 class RestaurantModel {
   final String id;
   final String name;
+  @JsonKey(
+      fromJson: DataUtils.pathToUrl
+  )
   final String thumbUrl;
   final List<String> tags;
   final RestaurantPriceRange priceRange;
@@ -27,25 +33,13 @@ class RestaurantModel {
     required this.deliveryFee,
   });
 
-  // factory method
-  factory RestaurantModel.fromJson({
-    required Map<String, dynamic> json,
 
-  }) {
-    print('RestaurantModel Data Parsing!!');
+  factory RestaurantModel.fromJson(Map<String, dynamic> json)
+  => _$RestaurantModelFromJson(json);
 
-    return RestaurantModel(
-        id: json['id'],
-        name: json['name'],
-        thumbUrl: 'http://$ip${json['thumbUrl']}',
-        priceRange: RestaurantPriceRange.values.firstWhere((element) => element.name == json['priceRange']),
-        tags: List<String>.from(json['tags']),
-        ratings: json['ratings'],
-        ratingsCount: json['ratingsCount'],
-        deliveryTime: json['deliveryTime'],
-        deliveryFee: json['deliveryFee']
-    );
+  Map<String, dynamic> toJson() => _$RestaurantModelToJson(this);
+
+  static pathToUrl(String value) {
+    return 'http://$ip$value';
   }
-
-
 }
