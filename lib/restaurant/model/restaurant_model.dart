@@ -34,10 +34,11 @@ class RestaurantModel {
   });
 
 
-  factory RestaurantModel.fromJson(Map<String, dynamic> json)
-  => _$RestaurantModelFromJson(json);
+ factory RestaurantModel.fromJson(Map<String, dynamic> json)
+ => _$RestaurantModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$RestaurantModelToJson(this);
+
 
   static pathToUrl(String value) {
     return 'http://$ip$value';
