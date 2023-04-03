@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/common/const/data.dart';
+import 'package:flutter_riverpod/common/dio/dio.dart';
 import 'package:flutter_riverpod/common/layout/default_layout.dart';
 import 'package:flutter_riverpod/product/component/product_card.dart';
 import 'package:flutter_riverpod/restaurant/component/restaurant_card.dart';
 import 'package:flutter_riverpod/restaurant/model/restaurant_detail_model.dart';
+import 'package:flutter_riverpod/restaurant/repository/restaurant_repository.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String id;
@@ -18,43 +20,46 @@ class RestaurantDetailScreen extends StatelessWidget {
 
 
   // 레스토랑 상세 API
-  Future<Map<String, dynamic>> getRestaurantDetail() async {
+  Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 
-    final resp = await dio.get(
-      'http://$ip/restaurant/$id',
-      options: Options(headers: {
-        'authorization': 'Bearer $accessToken',
-      }),
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
     );
-    return resp.data;
+
+    return repository.getRestaurantDetail(id: id);
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
         title: name,
-        child: FutureBuilder<Map<String, dynamic>>(
+        child: FutureBuilder<RestaurantDetailModel>(
           future: getRestaurantDetail(),
-          builder: (_, AsyncSnapshot<Map<String, dynamic>> snapshot){
+          builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot){
+          if(snapshot.hasError){
+            return Center(
+                child: Text(snapshot.error.toString()),
+            );
+          }
+
             if(!snapshot.hasData){
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-
-            final item = RestaurantDetailModel.fromJson(snapshot.data!,);
-
             return CustomScrollView(
               slivers: [
                 //선택한 레스토랑 메뉴 상세
-                renderTop(model: item),
+                renderTop(model: snapshot.data!),
 
                 renderLabel(),
 
                 //하단 메뉴 아이템 리스트
-                renderProducts(products: item.products),
+                renderProducts(products: snapshot.data!.products),
               ],
             );
           },
