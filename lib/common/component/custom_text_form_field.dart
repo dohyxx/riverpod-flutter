@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/const/colors.dart';
+import 'package:riverpod_project/common/const/colors.dart';
 
 
 class CustomTextFormField extends StatelessWidget {

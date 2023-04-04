@@ -1,6 +1,6 @@
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/common/const/data.dart';
+import 'package:riverpod_project/common/const/data.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CustomInterceptor extends Interceptor{

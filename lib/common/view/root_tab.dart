@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/const/colors.dart';
-import 'package:flutter_riverpod/common/layout/default_layout.dart';
-import 'package:flutter_riverpod/restaurant/view/restaurant_screen.dart';
+import 'package:riverpod_project/common/const/colors.dart';
+import 'package:riverpod_project/common/layout/default_layout.dart';
+import 'package:riverpod_project/restaurant/view/restaurant_screen.dart';
 
 
 class RootTab extends StatefulWidget {

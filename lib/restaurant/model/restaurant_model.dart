@@ -1,8 +1,8 @@
 
-import 'package:flutter_riverpod/common/enum/enum.dart';
-import 'package:flutter_riverpod/common/utils/data_utils.dart';
+import 'package:riverpod_project/common/enum/enum.dart';
+import 'package:riverpod_project/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:flutter_riverpod/common/const/data.dart';
+import 'package:riverpod_project/common/const/data.dart';
 part 'restaurant_model.g.dart';
 
 // 홈 화면 메뉴 리스트 모델

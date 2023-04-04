@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/const/data.dart';
-import 'package:flutter_riverpod/common/dio/dio.dart';
-import 'package:flutter_riverpod/restaurant/component/restaurant_card.dart';
-import 'package:flutter_riverpod/restaurant/model/restaurant_model.dart';
-import 'package:flutter_riverpod/restaurant/repository/restaurant_repository.dart';
-import 'package:flutter_riverpod/restaurant/view/restaurant_detail_screen.dart';
+import 'package:riverpod_project/common/const/data.dart';
+import 'package:riverpod_project/common/dio/dio.dart';
+import 'package:riverpod_project/restaurant/component/restaurant_card.dart';
+import 'package:riverpod_project/restaurant/model/restaurant_model.dart';
+import 'package:riverpod_project/restaurant/repository/restaurant_repository.dart';
+import 'package:riverpod_project/restaurant/view/restaurant_detail_screen.dart';
 
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);

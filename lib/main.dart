@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/view/splash_screen.dart';
+import 'package:riverpod_project/common/view/splash_screen.dart';
 
 void main() {
   runApp(

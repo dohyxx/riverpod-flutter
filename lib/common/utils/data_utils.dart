@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/common/const/data.dart';
+import 'package:riverpod_project/common/const/data.dart';
 
 class DataUtils{
 

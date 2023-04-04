@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/const/colors.dart';
-import 'package:flutter_riverpod/restaurant/model/restaurant_detail_model.dart';
-import 'package:flutter_riverpod/restaurant/model/restaurant_model.dart';
+import 'package:riverpod_project/common/const/colors.dart';
+import 'package:riverpod_project/restaurant/model/restaurant_detail_model.dart';
+import 'package:riverpod_project/restaurant/model/restaurant_model.dart';
 
 class RestaurantCard  extends StatelessWidget {
   // 이미지

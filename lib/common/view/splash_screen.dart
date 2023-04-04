@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/common/const/colors.dart';
-import 'package:flutter_riverpod/common/const/data.dart';
-import 'package:flutter_riverpod/common/layout/default_layout.dart';
-import 'package:flutter_riverpod/common/view/root_tab.dart';
-import 'package:flutter_riverpod/user/view/login_screen.dart';
+import 'package:riverpod_project/common/const/colors.dart';
+import 'package:riverpod_project/common/const/data.dart';
+import 'package:riverpod_project/common/layout/default_layout.dart';
+import 'package:riverpod_project/common/view/root_tab.dart';
+import 'package:riverpod_project/user/view/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
