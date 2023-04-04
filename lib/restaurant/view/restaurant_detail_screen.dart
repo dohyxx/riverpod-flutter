@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_project/common/const/data.dart';
 import 'package:riverpod_project/common/dio/dio.dart';
 import 'package:riverpod_project/common/layout/default_layout.dart';
@@ -8,7 +9,7 @@ import 'package:riverpod_project/restaurant/component/restaurant_card.dart';
 import 'package:riverpod_project/restaurant/model/restaurant_detail_model.dart';
 import 'package:riverpod_project/restaurant/repository/restaurant_repository.dart';
 
-class RestaurantDetailScreen extends StatelessWidget {
+class RestaurantDetailScreen extends ConsumerWidget {
   final String id;
   final String name;
 
@@ -19,26 +20,17 @@ class RestaurantDetailScreen extends StatelessWidget {
   }) : super(key: key);
 
 
-  // 레스토랑 상세 API
-  Future<RestaurantDetailModel> getRestaurantDetail() async {
-    final dio = Dio();
-    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
-
-    dio.interceptors.add(
-      CustomInterceptor(
-        storage: storage,
-      ),
-    );
-
-    return repository.getRestaurantDetail(id: id);
-  }
+  // // 레스토랑 상세 API
+  // Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
+  //   return ref.watch(restaurantRepositoryProvider).getRestaurantDetail(id: id);
+  // }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DefaultLayout(
         title: name,
         child: FutureBuilder<RestaurantDetailModel>(
-          future: getRestaurantDetail(),
+          future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(id: id),
           builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot){
           if(snapshot.hasError){
             return Center(
