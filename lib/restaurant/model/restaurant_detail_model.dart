@@ -1,7 +1,6 @@
 import 'package:riverpod_project/common/enum/enum.dart';
 import 'package:riverpod_project/common/utils/data_utils.dart';
 import 'package:riverpod_project/restaurant/model/restaurant_model.dart';
-import 'package:riverpod_project/common/const/data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'restaurant_detail_model.g.dart';

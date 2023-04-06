@@ -1,8 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_project/common/const/data.dart';
-import 'package:riverpod_project/common/dio/dio.dart';
 import 'package:riverpod_project/common/layout/default_layout.dart';
 import 'package:riverpod_project/product/component/product_card.dart';
 import 'package:riverpod_project/restaurant/component/restaurant_card.dart';
@@ -27,6 +24,7 @@ class RestaurantDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print('현재 페이지: Restaurant 상세');
     return DefaultLayout(
         title: name,
         child: FutureBuilder<RestaurantDetailModel>(
