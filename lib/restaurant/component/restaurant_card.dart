@@ -20,6 +20,10 @@ class RestaurantCard  extends StatelessWidget {
   final double ratings;
   // 상세 카드 여부
   final bool isDetail;
+
+  //Hero 위젯 키
+  final String? heroKey;
+
   // 상세 내용
   final String? detail;
 
@@ -33,6 +37,7 @@ class RestaurantCard  extends StatelessWidget {
     required this.ratings,
     this.isDetail = false,
     this.detail,
+    this.heroKey,
     Key? key,
   }) : super(key: key);
 
@@ -45,6 +50,7 @@ class RestaurantCard  extends StatelessWidget {
         fit: BoxFit.cover,
       ),
       name: model.name,
+      heroKey: model.id,
       tags:model.tags,
       ratingCount: model.ratingsCount,
       deliveryTime: model.deliveryTime,
@@ -59,19 +65,28 @@ class RestaurantCard  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('RestaurantCard Component!!');
+    //print('RestaurantCard Component!!');
 
     return Column(
       children: [
         // 홈 <-> 상세 페이지 구분
-        if(isDetail)
-          image,
-        if(!isDetail)
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: image,
+        if(heroKey != null)
+        Hero( ///메뉴 상세 클릭 시, 조금 더 자연스럽게 화면 전환
+          tag: ObjectKey(heroKey),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
         ),
+
+        if(heroKey == null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
+
         const SizedBox(height: 16.0,),
+
         Padding(
           padding: EdgeInsets.symmetric(horizontal: isDetail ? 16.0 : 0),
           child: Column(

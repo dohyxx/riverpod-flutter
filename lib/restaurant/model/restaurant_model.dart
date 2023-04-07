@@ -1,12 +1,13 @@
 
 import 'package:riverpod_project/common/enum/enum.dart';
+import 'package:riverpod_project/common/model/model_with_id.dart';
 import 'package:riverpod_project/common/utils/data_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'restaurant_model.g.dart';
 
 // 홈 화면 메뉴 리스트 모델
 @JsonSerializable()
-class RestaurantModel {
+class RestaurantModel implements IModelWithId{
   final String id;
   final String name;
   @JsonKey(

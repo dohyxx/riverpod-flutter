@@ -42,15 +42,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     try{
-      // final resp = await dio.post('http://$ip/auth/token',
-      //   options: Options(
-      //     headers: {
-      //       'authorization' : 'Bearer $refreshToken',
-      //     },
-      //   ),
-      // );
-      //
-      // await storage.write(key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
