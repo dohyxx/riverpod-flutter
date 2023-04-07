@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +8,13 @@ import 'package:riverpod_project/common/const/data.dart';
 import 'package:riverpod_project/common/layout/default_layout.dart';
 import 'package:riverpod_project/common/secure_storage/secure_storage.dart';
 import 'package:riverpod_project/common/view/root_tab.dart';
+import 'package:riverpod_project/user/model/user_model.dart';
+import 'package:riverpod_project/user/provider/user_me_provider.dart';
 
 
 class LoginScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'login';
+
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,113 +24,124 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  
+
   String username = '';
   String password = '';
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
+    final state = ref.watch(userMeProvider);
 
     return DefaultLayout(
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: SafeArea(
-            top: true,
-            bottom: false,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const _Title(),
-                  const SizedBox(height: 16.0),
-                  const _SubTitle(),
-                  Image.asset(
-                    'asset/img/misc/logo.png',
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 2.3,
+      child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: SafeArea(
+          top: true,
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const _Title(),
+                const SizedBox(height: 16.0),
+                const _SubTitle(),
+                Image.asset(
+                  'asset/img/misc/logo.png',
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height / 2.3,
+                ),
+                CustomTextFormField(
+                  hintText: "이메일을 입력해주세요",
+                  onChanged: (String value) {
+                    username = value;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+
+                CustomTextFormField(
+                  hintText: "비밀번호를 입력해주세요",
+                  onChanged: (String value) {
+                    password = value;
+                  },
+                  obscureText: true,
+                ),
+                const SizedBox(height: 16.0),
+
+                ElevatedButton(
+                  onPressed: state is UserModelLoading //로딩 중일때는 로그인 버튼을 누를 수 없게 함
+                      ? null
+                      : () async {
+                    ref.read(userMeProvider.notifier).login(
+                      username: username,
+                      password: password,
+                    );
+
+                    // //ID:비밀번호
+                    // final rawString = '$username:$password';
+                    //
+                    // //base 64 encoding
+                    // Codec<String, String> stringToBase64 = utf8.fuse(base64);
+                    // String token = stringToBase64.encode(rawString);
+                    //
+                    // final resp = await dio.post('http://$ip/auth/login',
+                    //   options: Options(
+                    //     headers: {
+                    //       'authorization' : 'Basic $token',
+                    //     },
+                    //   ),
+                    // );
+                    //
+                    // //storage 저장
+                    // final refreshToken = resp.data['refreshToken'];
+                    // final accessToken = resp.data['accessToken'];
+                    //
+                    // final storage = ref.read(secureStorageProvider);
+                    //
+                    // await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    // await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                    //
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //       builder: (_) => RootTab(),
+                    //   ),
+                    // );
+                    //
+                    // print('로그인 완료: ${resp.data}');
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: PRIMARY_COLOR,
                   ),
-                  CustomTextFormField(
-                    hintText: "이메일을 입력해주세요",
-                    onChanged: (String value) {
-                      username = value;
-                    },
+                  child: const Text(
+                    '로그인',
                   ),
-                  const SizedBox(height: 16.0),
-
-                  CustomTextFormField(
-                    hintText: "비밀번호를 입력해주세요",
-                    onChanged: (String value) {
-                      password = value;
-
-                    },
-                    obscureText: true,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    primary: Colors.black,
                   ),
-                  const SizedBox(height: 16.0),
-
-                  ElevatedButton(
-                      onPressed: () async {
-                        //ID:비밀번호
-                        final rawString = '$username:$password';
-
-                        //base 64 encoding
-                        Codec<String, String> stringToBase64 = utf8.fuse(base64);
-                        String token = stringToBase64.encode(rawString);
-
-                        final resp = await dio.post('http://$ip/auth/login',
-                          options: Options(
-                            headers: {
-                              'authorization' : 'Basic $token',
-                            },
-                          ),
-                        );
-
-                        //storage 저장
-                        final refreshToken = resp.data['refreshToken'];
-                        final accessToken = resp.data['accessToken'];
-
-                        final storage = ref.read(secureStorageProvider);
-
-                        await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (_) => RootTab(),
-                          ),
-                        );
-
-                        print('로그인 완료: ${resp.data}');
-
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: PRIMARY_COLOR,
-                      ),
-                      child: const Text(
-                        '로그인',
-                      ),
+                  onPressed: () async {
+                    //
+                  },
+                  child: const Text(
+                    '회원가입',
                   ),
-                  TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.black,
-                      ),
-                      onPressed: () async {
-                        //
-                      },
-                      child: const Text(
-                        '회원가입',
-                      ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }
-
 
 
 class _Title extends StatelessWidget {
@@ -138,9 +152,9 @@ class _Title extends StatelessWidget {
     return const Text(
       '환영합니다!',
       style: TextStyle(
-        fontSize: 34,
-        fontWeight: FontWeight.w500,
-        color: Colors.black
+          fontSize: 34,
+          fontWeight: FontWeight.w500,
+          color: Colors.black
       ),
     );
   }

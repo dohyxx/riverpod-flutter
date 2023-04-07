@@ -14,12 +14,12 @@ import 'package:riverpod_project/restaurant/provider/restaurant_rating_provider.
 import 'package:skeletons/skeletons.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'restaurantDetail';
+
   final String id;
-  final String name;
 
   const RestaurantDetailScreen({
     required this.id,
-    required this.name,
     Key? key,
   }) : super(key: key);
 
@@ -52,6 +52,7 @@ class _RestaurantDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingState = ref.watch(restaurantRatingProvider(widget.id));
+
     print('ratingState: ${ratingState.toString()}');
     print('ratingState: ${widget.id.toString()}');
 
@@ -65,7 +66,7 @@ class _RestaurantDetailScreenState
     }
 
     return DefaultLayout(
-      title: widget.name,
+      title: state.name,
       child: CustomScrollView(
         controller: controller,
         slivers: [
@@ -167,7 +168,7 @@ SliverPadding renderProducts({required List<RestaurantProductModel> products}) {
           final model = products[index];
           return Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: ProductCard.fromModel(model: model),
+            child: ProductCard.fromRestaurantProductModel(model: model),
           );
         },
         childCount: products.length,

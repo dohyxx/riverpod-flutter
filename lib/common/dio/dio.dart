@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_project/common/const/data.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riverpod_project/common/secure_storage/secure_storage.dart';
+import 'package:riverpod_project/user/provider/auth_provider.dart';
+import 'package:riverpod_project/user/provider/user_me_provider.dart';
 
 
 final dioProvider = Provider<Dio>((ref) {
@@ -11,7 +13,7 @@ final dioProvider = Provider<Dio>((ref) {
   final storage = ref.watch(secureStorageProvider);
 
   dio.interceptors.add(
-    CustomInterceptor(storage: storage),
+    CustomInterceptor(storage: storage, ref: ref),
   );
 
   return dio;
@@ -20,9 +22,11 @@ final dioProvider = Provider<Dio>((ref) {
 
 class CustomInterceptor extends Interceptor{
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
 });
 
 
@@ -127,6 +131,14 @@ class CustomInterceptor extends Interceptor{
         return handler.resolve(response);
 
       } on DioError catch (e) {
+
+        // CircularDependencyError 발생
+        // A, B
+        // A -> B의 친구
+        // B -> A의 친구 A -> B -> A -> B 무한 반복..
+        /// 상위에 객체를 하나 만들어서 해결한다.
+        ref.read(authProvider.notifier).logout();
+
         return handler.reject(e);
       }
     }
