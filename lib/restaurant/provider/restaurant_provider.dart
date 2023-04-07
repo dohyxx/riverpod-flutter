@@ -3,6 +3,7 @@ import 'package:riverpod_project/common/model/cursor_pagination_model.dart';
 import 'package:riverpod_project/common/provider/pagination_provider.dart';
 import 'package:riverpod_project/restaurant/model/restaurant_model.dart';
 import 'package:riverpod_project/restaurant/repository/restaurant_repository.dart';
+import 'package:collection/collection.dart';
 
 
 // restaurant 상세 메뉴에 대한 정보를 찾기 위한 Provider
@@ -13,8 +14,8 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>((ref,
     return null;
   }
 
-  print('<======= restaurant Provider!!: $id ');
-  return state.data.firstWhere((element) => element.id == id);
+  //데이터가 존재하지 않으면 Null을 리턴
+  return state.data.firstWhereOrNull((element) => element.id == id);
 });
 
 
@@ -27,6 +28,8 @@ final restaurantProvider = StateNotifierProvider<RestaurantStateNotifier, Cursor
   return notifier;
 },
 );
+
+
 
 
 class RestaurantStateNotifier extends PaginationProvider<RestaurantModel, RestaurantRepository> {
@@ -56,8 +59,21 @@ class RestaurantStateNotifier extends PaginationProvider<RestaurantModel, Restau
     //새로 데이터 요청
     final resp = await repository.getRestaurantDetail(id: id);
 
-    state =  pState.copyWith(
-      data: pState.data.map<RestaurantModel>((e) => e.id == id ? resp : e).toList(),
-    );
+
+    /// 존재하지 않는 데이터 -> 기존 데이터 캐시 마지막에 입력하기
+    // 만약, 요청 id : 10 일 때, list.where((e) => e.id == 10) 데이터가 존재하지 않는다.
+    // 데이터가 없을 때는 캐시의 끝에다가 데이터를 추가해준다.
+    if(pState.data.where((element) => element.id == id).isEmpty){
+      state = pState.copyWith(
+        data: <RestaurantModel>[
+          ...pState.data,
+          resp,
+        ]
+      );
+    }else{
+      state =  pState.copyWith(
+        data: pState.data.map<RestaurantModel>((e) => e.id == id ? resp : e).toList(),
+      );
+    }
   }
 }

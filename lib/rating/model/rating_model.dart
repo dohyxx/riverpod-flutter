@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:riverpod_project/common/model/model_with_id.dart';
 import 'package:riverpod_project/common/utils/data_utils.dart';
-import 'package:riverpod_project/user/user_model/user_model.dart';
+import 'package:riverpod_project/user/model/user_model.dart';
 
 part 'rating_model.g.dart';
 
