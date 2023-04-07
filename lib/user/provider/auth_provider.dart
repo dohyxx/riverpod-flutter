@@ -20,6 +20,8 @@ class AuthProvider extends ChangeNotifier {
   }) {
     ref.listen<UserModelBase?>(userMeProvider, (previous, next) {
       if (previous != next) {
+        // userMeProvider의 상태가 변경될 때 마다 notifyListeners 호출
+        // notifyListeners 호출되면 go_router에서 redirect 함수를 알아서 실행한다.
         notifyListeners();
       }
     });
@@ -64,15 +66,13 @@ class AuthProvider extends ChangeNotifier {
   //앱을 처음 시작했을 때, 토큰이 존재하는지 확인하고 로그인 혹은 홈으로 보내줄지 확인하는 과정 필요
   String? redirectLogic(GoRouterState state) {
 
-    final UserModelBase? user = ref.watch(userMeProvider);
+    final UserModelBase? user = ref.read(userMeProvider);
     final logginIn = state.location == '/login';
-    print('redirectLogic user : $user');
 
 
     //유저 정보가 없으면 로그인 중이라면 로그인 페이지에 그대로 두고
     // 로그인 중이 아니면 로그인 페이지로 이동
     if (user == null) {
-      print('user is null');
 
       return logginIn ? null : '/login';
     }
@@ -80,10 +80,8 @@ class AuthProvider extends ChangeNotifier {
     //userModel
     //사용자 정보가 있는 상태라면 로그인 중이거나 SplashScreen이면 홈으로 이동
     if (user is UserModel) {
-      print('user is UserModel: ${user is UserModel}');
       return logginIn || state.location == '/splash' ? '/' : null;
     }
-
 
     //UserModelError
     if (user is UserModelError) {

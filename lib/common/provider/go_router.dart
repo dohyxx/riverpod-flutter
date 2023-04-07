@@ -12,7 +12,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     routes: provider.routes,
     initialLocation: '/splash',
-    refreshListenable: provider,
-    redirect: provider.redirectLogic,
+    redirect: provider.redirectLogic, //페이지 이동할 때만 호출
+    refreshListenable: provider,      // authProvider의 notifyListeners가 호출될 때마다 자동으로 redirect 함수(redirectLogic)를 실행한다.
   );
 });
