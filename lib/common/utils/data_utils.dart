@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:riverpod_project/common/const/data.dart';
 
 class DataUtils{
+  static DateTime stringToDateTime(String value){
+    return DateTime.parse(value);
+  }
+
 
   static String pathToUrl(String value) {
     return 'http://$ip$value';
@@ -23,4 +27,5 @@ class DataUtils{
 
     return encoded;
   }
+
 }
