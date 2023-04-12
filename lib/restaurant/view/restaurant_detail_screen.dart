@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_project/common/const/colors.dart';
 import 'package:riverpod_project/common/layout/default_layout.dart';
 import 'package:riverpod_project/common/model/cursor_pagination_model.dart';
@@ -13,6 +14,7 @@ import 'package:riverpod_project/restaurant/model/restaurant_detail_model.dart';
 import 'package:riverpod_project/restaurant/model/restaurant_model.dart';
 import 'package:riverpod_project/restaurant/provider/restaurant_provider.dart';
 import 'package:riverpod_project/restaurant/provider/restaurant_rating_provider.dart';
+import 'package:riverpod_project/restaurant/view/basket_screen.dart';
 import 'package:riverpod_project/user/provider/basket_provider.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:badges/badges.dart' as badges;
@@ -58,9 +60,6 @@ class _RestaurantDetailScreenState
     final ratingState = ref.watch(restaurantRatingProvider(widget.id));
     final basket = ref.watch(basketProvider);
 
-    print('ratingState: ${ratingState.toString()}');
-    print('ratingState: ${widget.id.toString()}');
-
     if (state == null) {
       return const DefaultLayout(
         child: Center(
@@ -72,7 +71,9 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       title: state.name,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.pushNamed(BasketScreen.routeName);
+        },
         backgroundColor: PRIMARY_COLOR,
         child: badges.Badge(
           showBadge: basket.isNotEmpty,
